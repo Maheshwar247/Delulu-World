@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random meme generator</title>
+    <style>
+        body {
+            background-color:black; 
+            background-image:url("https://i.pinimg.com/1200x/2a/00/d2/2a00d26af6a484d2b21c339b05766b83.jpg");
+            background-size:cover;   
+            padding:25px;
+        }
+
+        #main {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            padding:10px;
+            gap:20px;
+        }
+        #meme-img {
+            height:650px;
+        }
+        .btn {
+            background-color:white;
+            border-radius:13px;
+            padding:8px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <img id="meme-img" />
+        <button  class="btn" onclick="fetchAPI()">Mememememe!</button>
+    </div>
+</body >
+<script>
+    function fetchAPI() {
+        fetch("https://meme-api.com/gimme/ProgrammerHumor")
+            .then((data) => {
+                if (!data.ok) throw new Error("Not Found Error");
+                return data.json();
+            })
+            .then((data) => {
+                document.getElementById("meme-img").src = data.url;
+            })
+            .catch((error) => {
+                const cleanMemes = data.memes.filter(maximum => !maximum.nsfw && !maximum.spoiler);
+                return cleanMemes[0] || null;
+                fetchAPI();
+            });
+    }
+    fetchAPI();
+</script>
+</html>
